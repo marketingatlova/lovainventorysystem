@@ -61,6 +61,12 @@
     .pin-key.wide{grid-column:1/3;} .pin-key.del{color:var(--red);}
     .auth-error{color:var(--red);font-size:12px;font-weight:600;display:none;margin-top:10px;}
     .auth-hint{font-size:11px;color:var(--text-3);margin-top:14px;}
+    /* Login loading state */
+    .pin-loading{display:none;flex-direction:column;align-items:center;gap:10px;padding:16px 0 4px;}
+    .pin-loading.visible{display:flex;}
+    .spin{width:22px;height:22px;border:2.5px solid var(--border);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .pin-loading-txt{font-size:12px;color:var(--text-3);font-weight:600;letter-spacing:.3px;}
 
     /* HUB */
     .hub-hero{background:var(--navy);padding:24px 16px 20px;margin-bottom:20px;}
@@ -126,8 +132,11 @@
     .btn-del{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:16px;padding:4px;flex-shrink:0;font-family:var(--font-ui);}
     .btn-del:hover{color:var(--red);}
 
-    /* BADGES */
-    .badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+    /* BADGES — restrained, only used for status */
+    .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+    .badge-pending{background:var(--surface-2);color:var(--text-3);border:1px solid var(--border);}
+    .badge-approved{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);}
+    .badge-rejected{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);}
     .badge-red{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);}
     .badge-green{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);}
     .badge-blue{background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-border);}
@@ -176,26 +185,37 @@
 
     /* APPROVAL */
     .order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:12px;overflow:hidden;box-shadow:var(--sh-sm);}
-    .order-head{padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;}
-    .order-id{font-size:12px;font-weight:700;font-family:var(--font-mono);color:var(--navy);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-    .order-meta{font-size:11px;color:var(--text-3);font-weight:600;margin-top:2px;}
+    .order-head{padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+    .order-id{font-size:12px;font-weight:700;font-family:var(--font-mono);color:var(--navy);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .order-meta{font-size:11px;color:var(--text-3);font-weight:500;margin-top:3px;}
     .src-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:4px;}
-    .src-inv{background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-border);}
-    .src-ose{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border);}
-    .order-item-row{padding:12px 14px;border-bottom:1px solid var(--surface-2);display:flex;gap:10px;align-items:flex-start;}
-    .order-item-row:last-of-type{border-bottom:none;}
-    .order-item-thumb{width:44px;height:44px;border-radius:var(--r);object-fit:cover;border:1px solid var(--border);background:var(--surface-2);flex-shrink:0;}
-    .order-item-info{flex:1;min-width:0;}
-    .order-item-name{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-    .order-item-detail{font-size:11px;color:var(--text-3);font-style:italic;}
-    .order-actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
-    .btn-approve{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-reject{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .batch-foot{padding:10px 14px;background:var(--surface-2);border-top:1px solid var(--border);display:flex;gap:8px;}
+    .src-inv{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border);}
+    .src-ose{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border);}
+
+    /* Item rows */
+    .a-item-row{display:flex;gap:14px;padding:14px 16px;border-bottom:1px solid var(--surface-2);transition:opacity .2s;}
+    .a-item-row:last-of-type{border-bottom:none;}
+    .a-thumb{width:64px;height:64px;min-width:64px;border-radius:var(--r);object-fit:cover;background:var(--surface-2);border:1px solid var(--border);display:block;align-self:flex-start;}
+    .a-thumb-empty{width:64px;height:64px;min-width:64px;border-radius:var(--r);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-3);font-weight:600;text-align:center;line-height:1.3;flex-shrink:0;}
+    .a-item-info{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+    .a-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+    .a-item-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;}
+    .a-item-price{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;flex-shrink:0;font-family:var(--font-mono);}
+    .a-item-qty{font-size:12px;color:var(--text-3);}
+    .a-item-purp{font-size:12px;color:var(--text-3);font-style:italic;line-height:1.4;}
+    /* Status + action row — status badge left, text-link actions right */
+    .a-item-actions{display:flex;align-items:center;gap:10px;margin-top:8px;}
+    .btn-approve{background:none;border:none;color:var(--green);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;}
+    .btn-reject{background:none;border:none;color:var(--red);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;}
+    .a-divider{color:var(--border);font-size:12px;user-select:none;}
+
+    /* Batch footer */
+    .batch-foot{padding:10px 16px;background:var(--surface-2);border-top:1px solid var(--border);display:flex;gap:8px;}
     .btn-batch-reject{flex:1;height:38px;background:transparent;color:var(--red);border:1px solid var(--red-border);border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-batch-approve{flex:2;height:38px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-line{display:inline-flex;align-items:center;background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-border);padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-ui);}
-    .btn-line:disabled{opacity:.5;cursor:not-allowed;}
+    .btn-batch-approve{flex:2;height:38px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+    .btn-line{display:inline-flex;align-items:center;gap:4px;background:transparent;color:var(--text-2);border:1px solid var(--border);padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-ui);}
+    .btn-line:hover{border-color:var(--navy);color:var(--navy);}
+    .btn-line:disabled{opacity:.4;cursor:not-allowed;}
 
     /* OSE PURCHASE FORM */
     .routing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:14px;box-shadow:var(--sh-sm);}
@@ -329,6 +349,10 @@
         </div>
       </div>
       <p class="auth-error" id="authError">Incorrect PIN — please try again</p>
+      <div class="pin-loading" id="pinLoading">
+        <div class="spin"></div>
+        <div class="pin-loading-txt">Verifying...</div>
+      </div>
       <p class="auth-hint">Contact your manager if you have forgotten your PIN</p>
     </div>
   </div>
@@ -647,6 +671,11 @@ function pinDel(){pin=pin.slice(0,-1);updateDots();document.getElementById('auth
 function updateDots(){for(let i=0;i<4;i++){const d=document.getElementById('d'+i);d.classList.toggle('filled',i<pin.length);d.classList.remove('error');}}
 
 async function doLogin(){
+  // Show spinner, dim keypad
+  document.getElementById('pinLoading').classList.add('visible');
+  document.getElementById('authError').style.display='none';
+  document.querySelector('.pin-grid').style.opacity='.35';
+  document.querySelector('.pin-grid').style.pointerEvents='none';
   try{
     const res=await invPost({action:'secure_login',pin});
     if(res.status==='success'){
@@ -682,6 +711,11 @@ async function doLogin(){
       go('scHub'); fetchMaster();
     } else { showPinError(); }
   } catch(e){ showPinError('Network error — check connection'); }
+  finally{
+    document.getElementById('pinLoading').classList.remove('visible');
+    document.querySelector('.pin-grid').style.opacity='';
+    document.querySelector('.pin-grid').style.pointerEvents='';
+  }
 }
 function showPinError(msg){
   document.getElementById('authError').innerText=msg||'Incorrect PIN — please try again';
@@ -939,14 +973,16 @@ function renderApprovals(){
     let rowsHtml='';
     items.forEach(o=>{
       const isPend=(o.status||'').toLowerCase().includes('pending');
+      const isApproved=(o.status||'').toLowerCase()==='approved';
+      const statCls=isPend?'badge-pending':isApproved?'badge-approved':'badge-rejected';
+      const statLbl=isPend?'Pending':isApproved?'Approved':'Rejected';
       // Resolve price / qty / subtotal robustly (same logic as original LOVA portal)
       let q2  = parseFloat(String(o.qty||0).replace(/[^0-9.-]/g,''))||0;
-      let sub  = parseFloat(String(o.price||0).replace(/[^0-9.-]/g,''))||0;  // price field = totalPrice in normalised cache
+      let sub  = parseFloat(String(o.price||0).replace(/[^0-9.-]/g,''))||0;
       let pr   = (sub>0&&q2>0)?sub/q2:0;
       const subStr = sub>0?fmtTHB(sub):'';
       const prStr  = pr>0?fmtTHB(pr):'';
       const photo  = o.photo||'';
-      const statBadge=`<span class="badge ${isPend?'badge-amber':(o.status||'').toLowerCase().includes('approved')?'badge-green':'badge-red'}">${o.status||'Pending'}</span>`;
       const rowKey=`${o._type}-${o._id}-${o._rowNum||o.itemCode}`;
 
       rowsHtml+=`<div class="a-item-row" id="arow-${rowKey}">
@@ -960,10 +996,12 @@ function renderApprovals(){
           </div>
           ${q2>0?`<div class="a-item-qty">${q2} ${o.unit||''}${prStr?' @ '+prStr:''}</div>`:''}
           ${o.reason?`<div class="a-item-purp">"${o.reason}"</div>`:''}
-          <div style="margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            ${statBadge}
+          <div class="a-item-actions">
+            <span class="badge ${statCls}">${statLbl}</span>
             ${isPend?`
+              <span class="a-divider">·</span>
               <button class="btn-approve" onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','APPROVED')">Approve</button>
+              <span class="a-divider">·</span>
               <button class="btn-reject"  onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','REJECTED')">Reject</button>`:''}
           </div>
         </div>
@@ -979,7 +1017,7 @@ function renderApprovals(){
           <div class="order-id">
             ${id}
             <span class="src-tag ${srcClass}">${srcLabel}</span>
-            ${isUrgent?'<span class="badge badge-red" style="font-size:9px;">URGENT</span>':''}
+            ${isUrgent?'<span class="badge badge-red" style="font-size:9px;vertical-align:middle;">Urgent</span>':''}
           </div>
           <div class="order-meta">By <strong>${p.staff||'Unknown'}</strong> &middot; ${p.branch||''}${p.section?' ('+p.section+')':''}</div>
         </div>
