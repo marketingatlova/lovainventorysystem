@@ -183,39 +183,74 @@
     .top-info{flex:1;margin:0 10px;} .top-name{font-size:13px;font-weight:600;} .top-cost{font-size:11px;color:var(--text-3);}
     .top-qty{font-size:12px;font-weight:700;font-family:var(--font-mono);background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);padding:3px 8px;border-radius:var(--r);}
 
-    /* APPROVAL */
+    /* ── APPROVAL CENTER — SaaS grade ── */
     .order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:12px;overflow:hidden;box-shadow:var(--sh-sm);}
-    .order-head{padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-    .order-id{font-size:12px;font-weight:700;font-family:var(--font-mono);color:var(--navy);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-    .order-meta{font-size:11px;color:var(--text-3);font-weight:500;margin-top:3px;}
-    .src-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:4px;}
-    .src-inv{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border);}
-    .src-ose{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border);}
 
-    /* Item rows */
-    .a-item-row{display:flex;gap:14px;padding:14px 16px;border-bottom:1px solid var(--surface-2);transition:opacity .2s;}
-    .a-item-row:last-of-type{border-bottom:none;}
-    .a-thumb{width:64px;height:64px;min-width:64px;border-radius:var(--r);object-fit:cover;background:var(--surface-2);border:1px solid var(--border);display:block;align-self:flex-start;}
-    .a-thumb-empty{width:64px;height:64px;min-width:64px;border-radius:var(--r);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-3);font-weight:600;text-align:center;line-height:1.3;flex-shrink:0;}
-    .a-item-info{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
-    .a-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-    .a-item-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;}
-    .a-item-price{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;flex-shrink:0;font-family:var(--font-mono);}
-    .a-item-qty{font-size:12px;color:var(--text-3);}
-    .a-item-purp{font-size:12px;color:var(--text-3);font-style:italic;line-height:1.4;}
-    /* Status + action row — status badge left, text-link actions right */
-    .a-item-actions{display:flex;align-items:center;gap:10px;margin-top:8px;}
-    .btn-approve{background:none;border:none;color:var(--green);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;}
-    .btn-reject{background:none;border:none;color:var(--red);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;}
-    .a-divider{color:var(--border);font-size:12px;user-select:none;}
+    /* Header row: ID + tags left, LINE button right */
+    .order-head{padding:11px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+    .order-head-left{display:flex;flex-direction:column;gap:4px;min-width:0;}
+    .order-head-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .order-id-txt{font-size:12px;font-weight:700;font-family:var(--font-mono);color:var(--navy);}
+    .order-meta{font-size:11px;color:var(--text-3);font-weight:400;}
+    .order-meta strong{color:var(--text-2);font-weight:600;}
 
-    /* Batch footer */
-    .batch-foot{padding:10px 16px;background:var(--surface-2);border-top:1px solid var(--border);display:flex;gap:8px;}
-    .btn-batch-reject{flex:1;height:38px;background:transparent;color:var(--red);border:1px solid var(--red-border);border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-batch-approve{flex:2;height:38px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-line{display:inline-flex;align-items:center;gap:4px;background:transparent;color:var(--text-2);border:1px solid var(--border);padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-ui);}
+    /* Source + status tags — consistent pill style */
+    .tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+    .tag-type{background:var(--surface);color:var(--text-2);border:1px solid var(--border);}
+    .tag-pending{background:#f5f5f4;color:#6b7280;border:1px solid #e5e7eb;}
+    .tag-approved{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);}
+    .tag-rejected{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);}
+    .tag-urgent{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);}
+
+    /* LINE button — quiet */
+    .btn-line{display:inline-flex;align-items:center;gap:5px;background:var(--surface);color:var(--text-2);border:1px solid var(--border);padding:5px 11px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-ui);transition:.15s;white-space:nowrap;}
     .btn-line:hover{border-color:var(--navy);color:var(--navy);}
     .btn-line:disabled{opacity:.4;cursor:not-allowed;}
+
+    /* Item rows */
+    .a-item-row{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid var(--surface-2);transition:background .15s;}
+    .a-item-row:last-of-type{border-bottom:none;}
+    .a-item-row.selected{background:#f8f7f4;}
+
+    /* Checkbox */
+    .a-cb-wrap{padding-top:2px;flex-shrink:0;}
+    .a-cb{width:16px;height:16px;cursor:pointer;accent-color:var(--navy);border-radius:3px;}
+
+    /* Thumbnail */
+    .a-thumb{width:60px;height:60px;min-width:60px;border-radius:var(--r);object-fit:cover;background:var(--surface-2);border:1px solid var(--border);display:block;flex-shrink:0;}
+    .a-thumb-empty{width:60px;height:60px;min-width:60px;border-radius:var(--r);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-3);font-weight:600;text-align:center;line-height:1.3;flex-shrink:0;}
+
+    /* Item body */
+    .a-item-body{flex:1;min-width:0;}
+    .a-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:2px;}
+    .a-item-name{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;}
+    .a-item-price{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;flex-shrink:0;font-family:var(--font-mono);}
+    .a-item-sub{font-size:12px;color:var(--text-3);margin-top:1px;}
+    .a-item-purp{font-size:12px;color:var(--text-3);font-style:italic;margin-top:3px;}
+
+    /* Per-item action row: status tag LEFT, approve/reject buttons RIGHT */
+    .a-item-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;}
+    .a-item-acts{display:flex;gap:6px;}
+    .btn-approve{height:28px;padding:0 12px;background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);border-radius:5px;font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;transition:.12s;}
+    .btn-approve:hover{background:#bbf7d0;}
+    .btn-reject{height:28px;padding:0 12px;background:var(--surface);color:var(--red);border:1px solid var(--red-border);border-radius:5px;font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;transition:.12s;}
+    .btn-reject:hover{background:var(--red-soft);}
+
+    /* Batch selection toolbar — appears when items checked */
+    .batch-toolbar{display:none;align-items:center;justify-content:space-between;padding:9px 16px;background:var(--navy);gap:10px;}
+    .batch-toolbar.visible{display:flex;}
+    .batch-sel-label{font-size:12px;font-weight:600;color:rgba(255,255,255,.7);}
+    .batch-toolbar-acts{display:flex;gap:6px;}
+    .btn-tb-approve{height:30px;padding:0 14px;background:#fff;color:var(--green);border:none;border-radius:5px;font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+    .btn-tb-reject{height:30px;padding:0 14px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+
+    /* Batch footer: reject all / approve all */
+    .batch-foot{padding:10px 16px;background:var(--surface-2);border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;}
+    .batch-sel-count{flex:1;font-size:11px;color:var(--text-3);font-weight:500;}
+    .btn-batch-reject{height:36px;padding:0 14px;background:transparent;color:var(--red);border:1px solid var(--red-border);border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;transition:.12s;}
+    .btn-batch-reject:hover{background:var(--red-soft);}
+    .btn-batch-approve{height:36px;padding:0 20px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;transition:.12s;}
+    .btn-batch-approve:hover{opacity:.9;}
 
     /* OSE PURCHASE FORM */
     .routing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:14px;box-shadow:var(--sh-sm);}
@@ -961,76 +996,111 @@ function renderApprovals(){
   if(sf==='PENDING')data=data.filter(o=>(o.status||'').toLowerCase().includes('pending'));
   if(q)data=data.filter(o=>(o.orderId||'').toLowerCase().includes(q)||(o.itemName||'').toLowerCase().includes(q));
   if(!data.length){el.innerHTML='<div class="empty">No orders match your filters.</div>';return;}
+
   const groups={};data.forEach(o=>{(groups[o._id]=groups[o._id]||[]).push(o);});
-  for(const[id,items]of Object.entries(groups)){
+
+  for(const[id,items] of Object.entries(groups)){
     const p=items[0];
-    const srcClass=p._type==='INV'?'src-inv':'src-ose';
     const srcLabel=p._type==='INV'?'Procurement':'External PO';
     const isUrgent=items.some(i=>i.isUrgent);
     const hasPending=items.some(o=>(o.status||'').toLowerCase().includes('pending'));
-    const rowNums=items.map(o=>JSON.stringify({type:o._type,id:o._id,rowNum:o._rowNum||'',itemCode:o.itemCode}));
+
+    // Compute overall batch status tag
+    const allApproved=items.every(o=>(o.status||'').toLowerCase()==='approved');
+    const allRejected=items.every(o=>(o.status||'').toLowerCase()==='rejected');
+    const batchStatCls=allApproved?'tag-approved':allRejected?'tag-rejected':'tag-pending';
+    const batchStatLbl=allApproved?'Approved':allRejected?'Rejected':'Pending';
 
     let rowsHtml='';
     items.forEach(o=>{
       const isPend=(o.status||'').toLowerCase().includes('pending');
       const isApproved=(o.status||'').toLowerCase()==='approved';
-      const statCls=isPend?'badge-pending':isApproved?'badge-approved':'badge-rejected';
+      const statCls=isPend?'tag-pending':isApproved?'tag-approved':'tag-rejected';
       const statLbl=isPend?'Pending':isApproved?'Approved':'Rejected';
-      // Resolve price / qty / subtotal robustly (same logic as original LOVA portal)
-      let q2  = parseFloat(String(o.qty||0).replace(/[^0-9.-]/g,''))||0;
-      let sub  = parseFloat(String(o.price||0).replace(/[^0-9.-]/g,''))||0;
-      let pr   = (sub>0&&q2>0)?sub/q2:0;
-      const subStr = sub>0?fmtTHB(sub):'';
-      const prStr  = pr>0?fmtTHB(pr):'';
-      const photo  = o.photo||'';
+
+      let q2=parseFloat(String(o.qty||0).replace(/[^0-9.-]/g,''))||0;
+      let sub=parseFloat(String(o.price||0).replace(/[^0-9.-]/g,''))||0;
+      let pr=(sub>0&&q2>0)?sub/q2:0;
+      const subStr=sub>0?fmtTHB(sub):'';
+      const prStr=pr>0?fmtTHB(pr):'';
+      const photo=o.photo||'';
       const rowKey=`${o._type}-${o._id}-${o._rowNum||o.itemCode}`;
+      const cbId=`cb-${rowKey}`;
 
       rowsHtml+=`<div class="a-item-row" id="arow-${rowKey}">
+        ${isPend?`<div class="a-cb-wrap"><input type="checkbox" class="a-cb" id="${cbId}" data-key="${rowKey}" data-type="${o._type}" data-oid="${o._id}" data-rownum="${o._rowNum||''}" data-icode="${o.itemCode}" onchange="updateBatchToolbar('${id}')"></div>`:'<div style="width:16px;flex-shrink:0;"></div>'}
         ${photo
-          ?`<a href="${photo}" target="_blank" rel="noopener"><img src="${photo}" class="a-thumb" onerror="this.closest('a').style.display='none'"></a>`
+          ?`<a href="${photo}" target="_blank" rel="noopener"><img src="${photo}" class="a-thumb" onerror="this.closest('a').replaceWith(document.createElement('div'))"></a>`
           :`<div class="a-thumb-empty">No photo</div>`}
-        <div class="a-item-info">
+        <div class="a-item-body">
           <div class="a-item-top">
             <span class="a-item-name">${o.itemName||'—'}</span>
             ${subStr?`<span class="a-item-price">${subStr}</span>`:''}
           </div>
-          ${q2>0?`<div class="a-item-qty">${q2} ${o.unit||''}${prStr?' @ '+prStr:''}</div>`:''}
+          ${q2>0?`<div class="a-item-sub">${q2} ${o.unit||''}${prStr?' · '+prStr+' each':''}</div>`:''}
           ${o.reason?`<div class="a-item-purp">"${o.reason}"</div>`:''}
-          <div class="a-item-actions">
-            <span class="badge ${statCls}">${statLbl}</span>
-            ${isPend?`
-              <span class="a-divider">·</span>
+          <div class="a-item-foot">
+            <span class="tag ${statCls}">${statLbl}</span>
+            ${isPend?`<div class="a-item-acts">
               <button class="btn-approve" onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','APPROVED')">Approve</button>
-              <span class="a-divider">·</span>
-              <button class="btn-reject"  onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','REJECTED')">Reject</button>`:''}
+              <button class="btn-reject"  onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','REJECTED')">Reject</button>
+            </div>`:''}
           </div>
         </div>
       </div>`;
     });
 
     const lineBtn=(p._type==='OSE'&&isUrgent)
-      ?`<button class="btn-line" onclick="resendLine('${id}',this)">&#128276; LINE alert</button>`:'';
+      ?`<button class="btn-line" onclick="resendLine('${id}',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> LINE alert</button>`:'';
 
     el.innerHTML+=`<div class="order-card" id="abatch-${id}">
       <div class="order-head">
-        <div>
-          <div class="order-id">
-            ${id}
-            <span class="src-tag ${srcClass}">${srcLabel}</span>
-            ${isUrgent?'<span class="badge badge-red" style="font-size:9px;vertical-align:middle;">Urgent</span>':''}
+        <div class="order-head-left">
+          <div class="order-head-tags">
+            <span class="order-id-txt">${id}</span>
+            <span class="tag tag-type">${srcLabel}</span>
+            <span class="tag ${batchStatCls}">${batchStatLbl}</span>
+            ${isUrgent?'<span class="tag tag-urgent">Urgent</span>':''}
           </div>
           <div class="order-meta">By <strong>${p.staff||'Unknown'}</strong> &middot; ${p.branch||''}${p.section?' ('+p.section+')':''}</div>
         </div>
         ${lineBtn}
       </div>
+      <div class="batch-toolbar" id="toolbar-${id}">
+        <span class="batch-sel-label" id="toolbar-lbl-${id}">0 selected</span>
+        <div class="batch-toolbar-acts">
+          <button class="btn-tb-approve" onclick="applyToSelected('${id}','APPROVED')">Approve selected</button>
+          <button class="btn-tb-reject"  onclick="applyToSelected('${id}','REJECTED')">Reject selected</button>
+        </div>
+      </div>
       ${rowsHtml}
-      ${hasPending?`
-      <div class="batch-foot">
+      ${hasPending?`<div class="batch-foot">
+        <span class="batch-sel-count">${items.filter(o=>(o.status||'').toLowerCase().includes('pending')).length} item${items.filter(o=>(o.status||'').toLowerCase().includes('pending')).length!==1?'s':''} pending</span>
         <button class="btn-batch-reject" onclick="batchApproval('${id}','REJECTED')">Reject all</button>
         <button class="btn-batch-approve" onclick="batchApproval('${id}','APPROVED')">Approve all</button>
       </div>`:''}
     </div>`;
   }
+}
+
+function updateBatchToolbar(batchId){
+  const checked=document.querySelectorAll(`#abatch-${batchId} .a-cb:checked`);
+  const toolbar=document.getElementById(`toolbar-${batchId}`);
+  const lbl=document.getElementById(`toolbar-lbl-${batchId}`);
+  if(checked.length>0){
+    toolbar.classList.add('visible');
+    lbl.innerText=`${checked.length} item${checked.length!==1?'s':''} selected`;
+  } else {
+    toolbar.classList.remove('visible');
+  }
+}
+
+async function applyToSelected(batchId,status){
+  const checked=document.querySelectorAll(`#abatch-${batchId} .a-cb:checked`);
+  for(const cb of checked){
+    await doApproval(cb.dataset.type,cb.dataset.oid,cb.dataset.rownum,cb.dataset.icode,status);
+  }
+  document.getElementById(`toolbar-${batchId}`)?.classList.remove('visible');
 }
 async function doApproval(type,orderId,rowNum,itemCode,status){
   const rowEl=document.getElementById(`arow-${type}-${orderId}-${rowNum||itemCode}`);
