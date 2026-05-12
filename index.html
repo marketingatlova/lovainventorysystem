@@ -189,8 +189,8 @@
     .order-item-name{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
     .order-item-detail{font-size:11px;color:var(--text-3);font-style:italic;}
     .order-actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
-    .btn-approve{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
-    .btn-reject{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+    .btn-approve{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+    .btn-reject{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border);padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
     .batch-foot{padding:10px 14px;background:var(--surface-2);border-top:1px solid var(--border);display:flex;gap:8px;}
     .btn-batch-reject{flex:1;height:38px;background:transparent;color:var(--red);border:1px solid var(--red-border);border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
     .btn-batch-approve{flex:2;height:38px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
@@ -257,6 +257,18 @@
     .search-box-full{width:100%;height:38px;padding:0 12px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;font-family:var(--font-ui);background:var(--surface);color:var(--text);outline:none;margin-bottom:10px;}
     .search-box-full:focus{border-color:var(--navy);}
     .filter-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+
+    /* APPROVAL ITEM ROWS — matches original LOVA portal */
+    .a-item-row{display:flex;gap:12px;padding:13px 16px;border-bottom:1px solid var(--surface-2);transition:opacity .22s;}
+    .a-item-row:last-of-type{border-bottom:none;}
+    .a-thumb{width:66px;height:66px;min-width:66px;border-radius:var(--r);object-fit:cover;background:var(--surface-2);border:1px solid var(--border);display:block;align-self:flex-start;}
+    .a-thumb-empty{width:66px;height:66px;min-width:66px;border-radius:var(--r);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-3);font-weight:600;text-align:center;line-height:1.3;flex-shrink:0;}
+    .a-item-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+    .a-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+    .a-item-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;}
+    .a-item-price{font-size:15px;font-weight:800;color:var(--navy);white-space:nowrap;flex-shrink:0;letter-spacing:-.3px;font-family:var(--font-mono);}
+    .a-item-qty{font-size:12px;color:var(--text-3);margin-top:2px;}
+    .a-item-purp{font-size:12px;color:var(--text-3);font-style:italic;line-height:1.4;margin-top:2px;}
     .toast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-8px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:999;box-shadow:0 8px 24px rgba(26,31,46,.25);white-space:nowrap;}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -922,29 +934,63 @@ function renderApprovals(){
     const srcLabel=p._type==='INV'?'Procurement':'External PO';
     const isUrgent=items.some(i=>i.isUrgent);
     const hasPending=items.some(o=>(o.status||'').toLowerCase().includes('pending'));
+    const rowNums=items.map(o=>JSON.stringify({type:o._type,id:o._id,rowNum:o._rowNum||'',itemCode:o.itemCode}));
+
     let rowsHtml='';
     items.forEach(o=>{
       const isPend=(o.status||'').toLowerCase().includes('pending');
+      // Resolve price / qty / subtotal robustly (same logic as original LOVA portal)
+      let q2  = parseFloat(String(o.qty||0).replace(/[^0-9.-]/g,''))||0;
+      let sub  = parseFloat(String(o.price||0).replace(/[^0-9.-]/g,''))||0;  // price field = totalPrice in normalised cache
+      let pr   = (sub>0&&q2>0)?sub/q2:0;
+      const subStr = sub>0?fmtTHB(sub):'';
+      const prStr  = pr>0?fmtTHB(pr):'';
+      const photo  = o.photo||'';
       const statBadge=`<span class="badge ${isPend?'badge-amber':(o.status||'').toLowerCase().includes('approved')?'badge-green':'badge-red'}">${o.status||'Pending'}</span>`;
-      rowsHtml+=`<div class="order-item-row" id="arow-${o._type}-${o._id}-${o._rowNum||o.itemCode}">
-        <img class="order-item-thumb" src="${o.photo||''}" onerror="this.src='https://placehold.co/44?text=?'">
-        <div class="order-item-info">
-          <div class="order-item-name">${o.itemName||'—'} ${statBadge}</div>
-          <div class="order-item-detail">${o.qty} ${o.unit||''}${o.reason?' · "'+o.reason+'"':''}</div>
+      const rowKey=`${o._type}-${o._id}-${o._rowNum||o.itemCode}`;
+
+      rowsHtml+=`<div class="a-item-row" id="arow-${rowKey}">
+        ${photo
+          ?`<a href="${photo}" target="_blank" rel="noopener"><img src="${photo}" class="a-thumb" onerror="this.closest('a').style.display='none'"></a>`
+          :`<div class="a-thumb-empty">No photo</div>`}
+        <div class="a-item-info">
+          <div class="a-item-top">
+            <span class="a-item-name">${o.itemName||'—'}</span>
+            ${subStr?`<span class="a-item-price">${subStr}</span>`:''}
+          </div>
+          ${q2>0?`<div class="a-item-qty">${q2} ${o.unit||''}${prStr?' @ '+prStr:''}</div>`:''}
+          ${o.reason?`<div class="a-item-purp">"${o.reason}"</div>`:''}
+          <div style="margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            ${statBadge}
+            ${isPend?`
+              <button class="btn-approve" onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','APPROVED')">Approve</button>
+              <button class="btn-reject"  onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','REJECTED')">Reject</button>`:''}
+          </div>
         </div>
-        ${isPend?`<div class="order-actions"><button class="btn-approve" onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','APPROVED')">Approve</button><button class="btn-reject" onclick="doApproval('${o._type}','${o._id}','${o._rowNum||''}','${o.itemCode}','REJECTED')">Reject</button></div>`:''}
       </div>`;
     });
-    const lineBtn=(p._type==='OSE'&&isUrgent)?`<button class="btn-line" onclick="resendLine('${id}',this)">LINE alert</button>`:'';
+
+    const lineBtn=(p._type==='OSE'&&isUrgent)
+      ?`<button class="btn-line" onclick="resendLine('${id}',this)">&#128276; LINE alert</button>`:'';
+
     el.innerHTML+=`<div class="order-card" id="abatch-${id}">
       <div class="order-head">
         <div>
-          <div class="order-id">${id}<span class="src-tag ${srcClass}">${srcLabel}</span>${isUrgent?'<span class="badge badge-red">URGENT</span>':''}</div>
-          <div class="order-meta">${p.branch||''} · ${p.staff||''}</div>
-        </div>${lineBtn}
+          <div class="order-id">
+            ${id}
+            <span class="src-tag ${srcClass}">${srcLabel}</span>
+            ${isUrgent?'<span class="badge badge-red" style="font-size:9px;">URGENT</span>':''}
+          </div>
+          <div class="order-meta">By <strong>${p.staff||'Unknown'}</strong> &middot; ${p.branch||''}${p.section?' ('+p.section+')':''}</div>
+        </div>
+        ${lineBtn}
       </div>
       ${rowsHtml}
-      ${hasPending?`<div class="batch-foot"><button class="btn-batch-reject" onclick="batchApproval('${id}','REJECTED')">Reject all</button><button class="btn-batch-approve" onclick="batchApproval('${id}','APPROVED')">Approve all</button></div>`:''}
+      ${hasPending?`
+      <div class="batch-foot">
+        <button class="btn-batch-reject" onclick="batchApproval('${id}','REJECTED')">Reject all</button>
+        <button class="btn-batch-approve" onclick="batchApproval('${id}','APPROVED')">Approve all</button>
+      </div>`:''}
     </div>`;
   }
 }
